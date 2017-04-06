@@ -80,6 +80,10 @@ module.exports = {
           matchBase: true
         }));
 
+        const js = distFiles.filter(minimatch.filter('**/*.js'), {
+          matchBase: true
+        });
+
         if (sourcemaps.length === 0) {
           this.log('no sourcemaps found');
         }
@@ -88,7 +92,7 @@ module.exports = {
           let mapFilePath = path.join(distDir, sourcemaps[i]);
           let hostURL = urljoin(
             hostname,
-            replaceExt(sourcemaps[i], '.js')
+            replaceExt(js[i], '.js')
           );
 
           publishSourcemap({
