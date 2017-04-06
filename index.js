@@ -11,6 +11,14 @@ var urljoin = require('url-join');
 module.exports = {
   name: 'ember-cli-deploy-newrelic-sourcemaps',
 
+  included: function(app) {
+    app.options['sourcemaps'] = {
+      enabled: true
+    };
+
+    this._super.included.apply(this, arguments);
+  },
+
   createDeployPlugin: function(options) {
     let DeployPlugin = DeployPluginBase.extend({
       name: options.name,
@@ -38,6 +46,10 @@ module.exports = {
         const sourcemaps = distFiles.filter(minimatch.filter(filePattern, {
           matchBase: true
         }));
+
+        if (sourcemaps.length === 0) {
+          this.log('no sourcemaps found');
+        }
 
         for(let i = 0; i < sourcemaps.length; i++) {
           let mapFilePath = path.join(distDir, sourcemaps[i]);
