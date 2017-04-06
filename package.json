@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-deploy-newrelic-sourcemaps",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Ship sourcemaps to NewRelic",
   "directories": {
     "doc": "doc",
