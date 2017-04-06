@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-deploy-newrelic-sourcemaps",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Ship sourcemaps to NewRelic",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -41,10 +41,18 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-cli-deploy-plugin",
+    "newrelic",
+    "sourcemaps"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6"
+    "@newrelic/publish-sourcemap": "^4.1.2",
+    "ember-cli-babel": "^5.1.6",
+    "ember-cli-deploy-plugin": "^0.2.9",
+    "minimatch": "^2.0.4",
+    "replace-ext": "^1.0.0",
+    "url-join": "^1.1.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
