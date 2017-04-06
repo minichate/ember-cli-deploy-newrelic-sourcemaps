@@ -33,8 +33,7 @@ function publishSourcemap(options, cb) {
 
   request
     .end(function (err, httpResponse) {
-      console.log('done');
-      if (err) {
+      if (err && err.status != 409) {
         return callback(err);
       }
 
