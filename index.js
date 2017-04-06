@@ -2,11 +2,45 @@
 'use strict';
 
 var DeployPluginBase = require('ember-cli-deploy-plugin');
-var publishSourcemap = require('@newrelic/publish-sourcemap').publishSourcemap;
 var minimatch = require('minimatch');
 var path = require('path');
 var replaceExt = require('replace-ext');
+var superagent = require('superagent')
 var urljoin = require('url-join');
+
+function publishSourcemap(options, cb) {
+  var sourcemapPath = options.sourcemapPath;
+  var javascriptUrl = options.javascriptUrl;
+  var nrAdminKey = options.nrAdminKey;
+  var releaseId = options.releaseId;
+  var releaseName = options.releaseName;
+  var applicationId = options.applicationId;
+  var sourcemapUploadHost = options.sourcemapUploadHost || 'https://sourcemaps.service.newrelic.com';
+  var sourcemapUploadPath = sourcemapUploadHost + '/v2/applications/' + applicationId + '/sourcemaps';
+  var callback = cb || function () { };
+
+  var request = superagent
+    .post(sourcemapUploadPath)
+    .attach('sourcemap', sourcemapPath)
+    .field('javascriptUrl', javascriptUrl)
+    .field('source', 'client-module')
+    .set('NEWRELIC-API-KEY', nrAdminKey);
+
+  if (releaseName && releaseId) {
+    request = request.field('releaseName', releaseName);
+    request = request.field('releaseId', releaseId);
+  }
+
+  request
+    .end(function (err, httpResponse) {
+      console.log('done');
+      if (err) {
+        return callback(err);
+      }
+
+      return callback(null, httpResponse.body);
+    });
+};
 
 module.exports = {
   name: 'ember-cli-deploy-newrelic-sourcemaps',
@@ -37,7 +71,7 @@ module.exports = {
 
       requiredConfig: ['hostname'],
 
-      didUpload: function(context) {
+      didBuild: function(context) {
         const distFiles = this.readConfig('distFiles');
         const distDir = this.readConfig('distDir');
         const filePattern = this.readConfig('filePattern');
@@ -63,9 +97,10 @@ module.exports = {
             javascriptUrl: hostURL,
             applicationId: this.readConfig('newrelicAppID'),
             nrAdminKey: this.readConfig('newrelicAPIKey'),
-          }, (err) => {
+          }, (err, response) => {
             this.log(err || 'Source map upload done');
           });
+          
         }
       }
     });
