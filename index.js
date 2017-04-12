@@ -101,7 +101,7 @@ module.exports = {
             applicationId: this.readConfig('newrelicAppID'),
             nrAdminKey: this.readConfig('newrelicAPIKey'),
           }, (err, response) => {
-            this.log(err || 'Source map upload done');
+            this.log(err || 'Source map upload done: ' + hostURL + ' -> ' + mapFilePath);
           });
           
         }
