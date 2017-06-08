@@ -47,13 +47,12 @@
     "sourcemaps"
   ],
   "dependencies": {
-    "@newrelic/publish-sourcemap": "^4.1.2",
-    "ember-cli-babel": "^5.1.6",
+    "@newrelic/publish-sourcemap": "^4.4.0",
     "ember-cli-deploy-plugin": "^0.2.9",
-    "minimatch": "^2.0.4",
+    "minimatch": "^3.0.4",
     "replace-ext": "^1.0.0",
-    "superagent": "^3.4.1",
-    "url-join": "^1.1.0"
+    "superagent": "^3.5.2",
+    "url-join": "^2.0.2"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
